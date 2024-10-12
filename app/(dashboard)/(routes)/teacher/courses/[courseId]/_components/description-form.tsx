@@ -20,11 +20,9 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
-
+import { Course } from "@prisma/client";
 interface DescriptionFormProps {
-  initialData: {
-    description: string;
-  };
+  initialData: Course;
   courseId: string;
 }
 
@@ -45,7 +43,7 @@ export function DescriptionForm({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      description: initialData.description,
+      description: initialData?.description || "",
     },
   });
 
@@ -103,7 +101,7 @@ export function DescriptionForm({
                       disabled={isSubmitting}
                       placeholder="e.g. 'This course is about...' "
                       className="bg-white"
-                      defaultValue={initialData.description}
+                      defaultValue={initialData?.description || ""}
                       {...field}
                     />
                   </FormControl>
