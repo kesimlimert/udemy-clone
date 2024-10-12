@@ -10,6 +10,7 @@ import { CategoryForm } from "./_components/category-form";
 import { PriceForm } from "./_components/price-fom";
 import { File } from "lucide-react";
 import { AttachmentForm } from "./_components/attachment-form";
+import { ChaptersForm } from "./_components/chapters-form";
 
 export default async function CourseIdPage({
   params,
@@ -25,11 +26,17 @@ export default async function CourseIdPage({
   const course = await db.course.findUnique({
     where: {
       id: params.courseId,
+      userId,
     },
     include: {
       attachments: {
         orderBy: {
           createdAt: "desc",
+        },
+      },
+      chapters: {
+        orderBy: {
+          position: "asc",
         },
       },
     },
@@ -41,6 +48,7 @@ export default async function CourseIdPage({
     course?.imageUrl,
     course?.price,
     course?.categoryId,
+    course?.chapters.some((chapter) => chapter.isPublished),
   ];
 
   const totalFields = requiredFields.length;
@@ -92,7 +100,7 @@ export default async function CourseIdPage({
               <IconBadge icon={ListChecks} />
               <h2 className="text-xl">Course chapters</h2>
             </div>
-            <div>TODO: CHAPTERS</div>
+            <ChaptersForm initialData={course} courseId={course.id} />
           </div>
           <div className="flex items-center gap-x-2">
             <IconBadge icon={CircleDollarSign} />
