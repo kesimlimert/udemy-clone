@@ -16,7 +16,7 @@ interface CourseCardProps {
   category: string;
 }
 
-export const CourseCard = ({
+export function CourseCard ({
   id,
   title,
   imageUrl,
@@ -24,7 +24,7 @@ export const CourseCard = ({
   price,
   progress,
   category,
-}: CourseCardProps) => {
+}: CourseCardProps) {
   return (
     <Link href={`/courses/${id}`}>
       <div className="group hover:shadow-sm transition overflow-hidden border rounded-lg p-3 h-full">

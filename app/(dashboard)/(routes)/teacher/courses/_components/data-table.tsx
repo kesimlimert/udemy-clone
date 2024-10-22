@@ -1,19 +1,19 @@
-"use client";
+"use client"
 
-import * as React from "react";
-
+import * as React from "react"
 import {
   ColumnDef,
-  flexRender,
-  SortingState,
   ColumnFiltersState,
+  SortingState,
+  flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-  getPaginationRowModel,
-  getFilteredRowModel,
-} from "@tanstack/react-table";
-import Link from "next/link";
+} from "@tanstack/react-table"
+import Link from "next/link"
+import { PlusCircle } from "lucide-react"
 
 import {
   Table,
@@ -22,14 +22,13 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { PlusCircle } from "lucide-react";
+} from "@/components/ui/table"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
+  columns: ColumnDef<TData, TValue>[]
+  data: TData[]
 }
 
 export function DataTable<TData, TValue>({
@@ -37,23 +36,22 @@ export function DataTable<TData, TValue>({
   data,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
+
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
     onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
     state: {
       sorting,
       columnFilters,
     },
-  });
+  })
 
   return (
     <div>
@@ -66,10 +64,10 @@ export function DataTable<TData, TValue>({
           }
           className="max-w-sm"
         />
-        <Link href="/teacher/courses/create">
+        <Link href="/teacher/create">
           <Button>
             <PlusCircle className="h-4 w-4 mr-2" />
-            New Course
+            New course
           </Button>
         </Link>
       </div>
@@ -88,7 +86,7 @@ export function DataTable<TData, TValue>({
                             header.getContext()
                           )}
                     </TableHead>
-                  );
+                  )
                 })}
               </TableRow>
             ))}
@@ -102,20 +100,14 @@ export function DataTable<TData, TValue>({
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
+                <TableCell colSpan={columns.length} className="h-24 text-center">
                   No results.
                 </TableCell>
               </TableRow>
@@ -142,5 +134,5 @@ export function DataTable<TData, TValue>({
         </Button>
       </div>
     </div>
-  );
+  )
 }
